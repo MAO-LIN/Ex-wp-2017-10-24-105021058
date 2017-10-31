@@ -39,6 +39,7 @@ public class Frame2 extends JFrame {
         for(int i=0;i<6;i++){
             jlbLoto[i]=new JLabel("null",JLabel.CENTER);
             jinPanlC.add(jlbLoto[i]);
+            jlbLoto[i].setBackground(new Color(255, 222, 185));
         }
         setLoto();
         jdktpane.add(jinFrame);
@@ -66,11 +67,23 @@ public class Frame2 extends JFrame {
                 jinFrame.setVisible(true);
             }
         });
+        jinbtnGo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setLoto();
+            }
+        });
 
     }
     private void setLoto(){
         for(int i=0;i<6;i++){
-           jlbLoto[i].setText();
+            jlbLoto[i].setText(Integer.toString(rdm.nextInt(6)+1));
+            for(int j=0;j<i;j++){
+                if(jlbLoto[i].getText().equals(jlbLoto[j].getText())){
+                   i=i-1;
+                   break;
+                }
+            }
         }
     }
 }
