@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
 
 import javax.swing.*;
@@ -10,6 +12,9 @@ public class Frame2 extends JFrame {
     private int screenW= Toolkit.getDefaultToolkit().getScreenSize().width;
     private JMenuBar jmb=new JMenuBar();
     private JMenu jmF=new JMenu("File");
+    private JMenu jmS=new JMenu("Set");
+    private JMenu jmG=new JMenu("Game");
+    private JMenu jmA=new JMenu("About");
     private JMenuItem jmFExit=new JMenuItem("Exit");
     private JMenuItem jmFLoto=new JMenuItem("Loto");
     private JInternalFrame jinFrame=new JInternalFrame();
@@ -20,24 +25,31 @@ public class Frame2 extends JFrame {
     private JButton jinbtnClose=new JButton("Exit");
     private JButton jinbtnGo=new JButton("Go");
     private Random rdm=new Random(System.currentTimeMillis());
+    private LoginFrame log;
 
-    public Frame2(LoginFrame lfm){
+    public Frame2(LoginFrame LoginFrame){
+        log=LoginFrame;
         initComp();
     }
     private void initComp(){
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setBounds(screenW/2-600/2,screenH/2-450/2,600,450);
         this.setJMenuBar(jmb);
         this.setContentPane(jdktpane);
         jinFrame.setBounds(0,0,300,150);
         jmb.add(jmF);
+        jmb.add(jmS);
+        jmb.add(jmG);
+        jmb.add(jmA);
         jmF.add(jmFExit);
-        jmF.add(jmFLoto);
+        jmG.add(jmFLoto);
         jmFLoto.setAccelerator(KeyStroke.getKeyStroke('L',Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         jinFrame.setLayout(new BorderLayout(5,5));
         jinFrame.add(BorderLayout.CENTER,jinPanlC);
         for(int i=0;i<6;i++){
             jlbLoto[i]=new JLabel("null",JLabel.CENTER);
+            jlbLoto[i].setFont(new Font("",Font.BOLD,24));
+            jlbLoto[i].setBackground(new Color(175, 231,255));
             jinPanlC.add(jlbLoto[i]);
             jlbLoto[i].setBackground(new Color(255, 222, 185));
         }
@@ -46,6 +58,13 @@ public class Frame2 extends JFrame {
         jinFrame.add(BorderLayout.SOUTH,jinPanlS);
         jinPanlS.add(jinbtnClose);
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Frame2.this.setVisible(false);
+                log.setVisible(true);
+            }
+        });
         jinbtnClose.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
